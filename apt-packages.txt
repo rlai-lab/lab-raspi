@@ -1,0 +1,3 @@
+avahi-daemon
+build-essential
+git
