@@ -19,3 +19,4 @@ However, this is a bit of a minefield, because some of the adapters don't have t
 # Powered USB Hub
 
 While not strictly necessary (I've been able to run a webcam, wifi, and a couple of other peripherals straight off of the Raspberry Pi's built-in USB ports), it's probably a good idea because of the Pi's tendency to become unstable if you draw too much power.
+
