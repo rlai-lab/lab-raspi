@@ -41,3 +41,7 @@ init 1
 # then follow the same protocol as above
 ```
 
+# Sources
+
+http://jeffskinnerbox.me/posts/2014/Mar/31/howto-linux-maintenance-and-filesystem-hygiene/
+

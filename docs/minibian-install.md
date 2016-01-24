@@ -7,6 +7,11 @@ Installing it is reasonably easy, and configuring it is not particularly difficu
 
 Download it, and extract it.
 
+## Resize the partition beforehand
+
+Some people suggest resizing the partition using GParted to give things like `/boot` the user directories a little more space.
+If you're making your own images from a Minibian base, this is probably a good idea.
+
 # Install onto SD Card
 
 If the card has been used before, you should probably delete the partitions and reformat the SD card as FAT32.
@@ -54,8 +59,10 @@ Now you can run, e.g., `conda update` to get the newest version of the tool, and
 
 ```
 conda install pip
-conda create -n py34 python=3.4 numpy
-conda create -n 
+conda install ipython
+# Create some environments
+conda create -n py34 python=3.4 numpy ipython
+conda create -n py27 python=2.7 numpy ipython
 ```
 
 ## Setting up SSH 
@@ -223,23 +230,43 @@ The line beginning with `127.0.1.1` followed by your current hostname is the one
 As root, it's simple:
 
 ```
-adduser pi # ...and then follow the options.
-passwd pi # set the user's password
-groups pi # see the groups the user is part of
-adduser pi [group] # add the user to a new group
+adduser MY_NEW_USER # ...and then follow the options.
+passwd MY_NEW_USER # set the user's password
+groups MY_NEW_USER # see the groups the user is part of
+adduser MY_NEW_USER [group] # add the user to a new group
 ```
 
+The groups you may want to add are things like:
+
+```
+# For user `pi`, from the defaults of the Raspbian distribution
+adduser pi audio
+adduser pi dialout
+adduser pi input
+adduser pi netdev
+adduser pi tty
+adduser pi users
+adduser pi video
+```
+
+[See here for more details](https://wiki.archlinux.org/index.php/users_and_groups)
+
 You may want to give the new user the ability to execute commands via `sudo`.
-This can be done via `sudo visudo`, and modify the file so it looks like:
+
+```
+sudo usermod -a -G sudo MY_NEW_USER
+```
+
+Alternatively, this can be done via `sudo visudo`, and modify the file so it looks like:
 
 ```
 # User privilege specification
 root  ALL=(ALL:ALL) ALL
-my_new_user   ALL = NOPASSWD: ALL
+MY_NEW_USER   ALL = NOPASSWD: ALL
 ```
 
 Deleting a user can be done via `sudo userdel -r user_to_delete`
 
-## Disable SSH Logins as Root
+## Set up Passwordless SSH Authentication
 
-## Set up Passwordless Authentication
+## Disable SSH Logins as Root

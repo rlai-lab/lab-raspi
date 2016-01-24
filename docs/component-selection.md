@@ -1,4 +1,4 @@
-
+TL;DR: Notes on important components and how to pick them for the Raspberry Pi.
 
 # SD Card
 
