@@ -269,4 +269,43 @@ Deleting a user can be done via `sudo userdel -r user_to_delete`
 
 ## Set up Passwordless SSH Authentication
 
+Check that you have some SSH keys already for the computer you want to connect to the Pi with.
+
+```
+# For OS X or Linux
+ls ~/.ssh
+```
+
+If not, or if you're feeling paranoid, generate some new SSH keys:
+
+```
+ssh-keygen -t rsa -C "A comment identifying the key"
+```
+
+Copy the key to the Raspberry Pi
+
+```
+cat ~/.ssh/id_rsa.pub | ssh pi@raspberry.local 'cat >> .ssh/authorized_keys'
+```
+
+You should replace `raspberry.local` with your machine's address (using the IP address if you haven't installed `avahi-daemon`).
+
+Now you can test it by trying to connect to the Raspberry Pi.
+
+```
+ssh pi@raspberry.local
+```
+
+If you manage to connect without being asked for a password, you've either succeeded or your Pi has terrible security settings.
+
 ## Disable SSH Logins as Root
+
+This is pretty easy, but it has to be done after setting up a different user (and, if you're connecting over SSH, giving them sudo privledges) because Minibian doesn't create a user account.
+I assume that's intended to save space or something.
+Anyways, it's as simple as `sudo nano /etc/ssh/sshd_config` and changing the line `PermitRootLogin` such that:
+
+```
+...
+PermitRootLogin no
+...
+```
