@@ -298,6 +298,20 @@ ssh pi@raspberry.local
 
 If you manage to connect without being asked for a password, you've either succeeded or your Pi has terrible security settings.
 
+### SSH Protip
+
+On my computer, I find it somewhat annoying how, if the Pi's IP address changes, or if the SSH key gets regenerated somehow (say, by installing a new OS), I can't SSH into it until I've futzed around with the `~/.ssh/known_hosts` file.
+
+Rather than completely disabling this sort of checking, since it might be useful on the wider Internet, we can just alter it for specific hosts via the `~/.ssh/config` file, adding the lines
+
+```
+Host 192.168.1.*
+        StrictHostChecking no
+        UserKnownHostsFile /dev/null
+```
+
+Modify it to suit your local network.
+
 ## Disable SSH Logins as Root
 
 This is pretty easy, but it has to be done after setting up a different user (and, if you're connecting over SSH, giving them sudo privledges) because Minibian doesn't create a user account.
@@ -305,7 +319,6 @@ I assume that's intended to save space or something.
 Anyways, it's as simple as `sudo nano /etc/ssh/sshd_config` and changing the line `PermitRootLogin` such that:
 
 ```
-...
+[... blah blah blah...]
 PermitRootLogin no
-...
 ```
