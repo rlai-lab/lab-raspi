@@ -306,7 +306,6 @@ Rather than completely disabling this sort of checking, since it might be useful
 
 ```
 Host 192.168.1.*
-        StrictHostChecking no
         UserKnownHostsFile /dev/null
 ```
 
