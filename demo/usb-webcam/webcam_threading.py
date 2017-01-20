@@ -1,16 +1,18 @@
 """
-Using threading with the PiCamera.
+Using threading with a USB Webcam and OpenCV.
 
 Employing threads is necessary because otherwise reading from the camera's 
 stream is a blocking process, but most of the time we want to run something 
 else while the camera is waiting for a new frame.
+
+Requires OpenCV 3.1.0 and numpy.
 
 Usage
 -----
 
 ```
 # Starting the camera
-t = CameraStream()
+t = WebcamStream()
 t.start()
 
 # Getting the most recent frame (note the camera takes a moment to warm up)
@@ -25,49 +27,43 @@ t.join()
 """
 import threading
 import time
-from picamera import PiCamera
-from picamera.array import PiRGBArray
+import numpy as np 
 
 
-class CameraStream(threading.Thread):
-    """A simple Thread subclass for using the PiCamera module."""
-    def __init__(self, res=(320, 240), fps=30, **kwargs):
+class WebcamStream(threading.Thread):
+    """A simple Thread subclass for using a USB webcam."""
+    def __init__(self, source=0, res=(320, 240), fps=30, **kwargs):
         super().__init__(**kwargs)
+        self.source = source
         self.resolution = res
         self.framerate = fps
 
-        # Frame private variable
+        # Frame
         self._frame = None
 
-        # Halt flag (when this is set, the loop in `run` stops)
+        # Halt flag
         self.halt = threading.Event()
 
     def run(self):
-        # Open the camera
-        camera = PiCamera()
-        # Set the options from initialization
-        camera.resolution = self.resolution
-        camera.framerate = self.framerate
-        raw = PiRGBArray(camera, size=self.resolution)
-        stream = camera.capture_continuous(raw, 
-            format='bgr',
-            use_video_port=True)
+        camera = cv2.VideoCapture(self.source)
+        width, height = self.resolution
+        camera.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        camera.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        camera.set(cv2.CAP_PROP_FPS, self.framerate)
 
         try:
-            for f in stream:
-                self._frame = f.array
+            while not self.halt.is_set():
+                ret, frame = camera.read()
+                self._frame = frame # TODO: Check if this needs to be copied
                 raw.truncate(0)
 
-                if self.halt.is_set():
-                    break
             
         except Exception as e:
             raise(e)
 
         finally:
-            raw.close()
-            stream.close()
-            camera.close()
+            camera.release()
+            cv2.destroyAllWindows()
             return
     
     @property 
