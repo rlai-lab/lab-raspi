@@ -49,7 +49,19 @@ After copying the file over to a computer with an attached monitor (e.g., via `s
 
 # References
 
-- https://www.raspberrypi.org/learning/getting-started-with-picamera/worksheet/
-- http://picamera.readthedocs.io/en/release-1.10/index.html
-- http://picamera.readthedocs.io/en/release-1.11/recipes2.html
-- https://www.raspberrypi.org/documentation/usage/camera/python/README.md
+- Setting up the Camera Module
+  - https://www.raspberrypi.org/learning/getting-started-with-picamera/worksheet/
+  - https://www.raspberrypi.org/documentation/usage/camera/python/README.md
+  - https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspivid.md
+  - https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspistill.md
+  - http://elinux.org/Rpi_Camera_Module
+
+- Using the camera module
+  - http://picamera.readthedocs.io/en/release-1.10/index.html
+  - http://picamera.readthedocs.io/en/release-1.11/recipes2.html
+
+- Some posts for PyImageSearch on the camera module
+  + http://www.pyimagesearch.com/2015/03/30/accessing-the-raspberry-pi-camera-with-opencv-and-python/
+  + http://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
+  + http://www.pyimagesearch.com/2016/01/04/unifying-picamera-and-cv2-videocapture-into-a-single-class-with-opencv/
+  + http://www.pyimagesearch.com/2016/01/18/multiple-cameras-with-the-raspberry-pi-and-opencv/
