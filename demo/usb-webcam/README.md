@@ -24,6 +24,16 @@ v4l2-ctl --list-formats-ext
 v4l2-ctl -d /dev/video0 --list-formats
 ```
 
+Set and test the framerate
+
+```bash
+# Set framerate
+v4l2-ctl -d /dev/video0 --set-parm 30
+
+# Test that FPS is actually realized
+v4l2-ctl -d /dev/video0 --stream-mmap --stream-count=1000
+```
+
 # References
 
 - USB Webcams for the Raspberry Pi
