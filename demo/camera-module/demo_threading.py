@@ -14,11 +14,14 @@ def detect_change(cs):
         cur = cs.frame
         tic = time.time()
         if np.any(prev != cur):
+            # If there's any change (there probably will be) print a message
             print('Change occured! Interval:', tic - toc)
             print('Pixel difference:', np.sum(prev != cur))
             prev = cur
+        else:
+            # Otherwise, sleep. This alone can potentially double FPS.
+            time.sleep(1e-6)
         toc = tic
-        time.sleep(0.00001)
         
 
 

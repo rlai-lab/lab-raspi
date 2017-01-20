@@ -31,7 +31,7 @@ from picamera.array import PiRGBArray
 
 class CameraStream(threading.Thread):
     """A simple Thread subclass for using the PiCamera module."""
-    def __init__(self, res=(320, 240), fps=30, **kwargs):
+    def __init__(self, res=(640, 480), fps=30, **kwargs):
         super().__init__(**kwargs)
         self.resolution = res
         self.framerate = fps
@@ -48,9 +48,11 @@ class CameraStream(threading.Thread):
         # Set the options from initialization
         camera.resolution = self.resolution
         camera.framerate = self.framerate
+
+        # Create storage for frames and set up stream
         raw = PiRGBArray(camera, size=self.resolution)
         stream = camera.capture_continuous(raw, 
-            format='bgr',
+            format='rgb',
             use_video_port=True)
 
         try:

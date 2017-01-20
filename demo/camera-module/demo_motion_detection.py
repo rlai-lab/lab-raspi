@@ -30,19 +30,19 @@ def detection_loop(cs):
         prev = cs.frame
     
     # Convert to grayscale
-    prev = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
+    prev = cv2.cvtColor(prev, cv2.COLOR_RGB2GRAY)
     toc = time.time()
 
     while True:
         cur = cs.frame
-        cur = cv2.cvtColor(cur, cv2.COLOR_BGR2GRAY)
+        cur = cv2.cvtColor(cur, cv2.COLOR_RGB2GRAY)
         tic = time.time()
         if detect_motion(prev, cur):
             print("Motion detected! Interval:", tic - toc)
-
+        else:
+            time.sleep(1e-6)
         prev = cur
         toc = tic
-        time.sleep(0.0001)
         
 
 

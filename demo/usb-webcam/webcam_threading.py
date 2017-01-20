@@ -27,12 +27,13 @@ t.join()
 """
 import threading
 import time
+import cv2 
 import numpy as np 
 
 
 class WebcamStream(threading.Thread):
     """A simple Thread subclass for using a USB webcam."""
-    def __init__(self, source=0, res=(320, 240), fps=30, **kwargs):
+    def __init__(self, source=0, res=(640, 480), fps=30, **kwargs):
         super().__init__(**kwargs)
         self.source = source
         self.resolution = res
@@ -54,11 +55,10 @@ class WebcamStream(threading.Thread):
         try:
             while not self.halt.is_set():
                 ret, frame = camera.read()
-                self._frame = frame # TODO: Check if this needs to be copied
-                raw.truncate(0)
-
+                self._frame = frame 
             
         except Exception as e:
+            print(e)
             raise(e)
 
         finally:
@@ -70,3 +70,29 @@ class WebcamStream(threading.Thread):
     def frame(self):
         """The most recent frame from the camera."""
         return self._frame
+
+
+
+if __name__ == "__main__":
+    t = WebcamStream()
+    t.start()
+
+    try:
+        prev = t.frame  
+        toc = time.time()
+        while True:
+            cur = t.frame  
+            tic = time.time()
+            if not (prev is cur):
+                print('Approximate FPS:', 1/(tic - toc))
+                toc = tic
+                prev = cur 
+            else:
+                time.sleep(1e-6)
+    
+    except KeyboardInterrupt as e:
+        t.halt.set()
+
+    finally:
+        t.join()
+
